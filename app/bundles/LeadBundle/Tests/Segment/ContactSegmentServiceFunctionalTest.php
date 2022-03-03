@@ -218,6 +218,20 @@ class ContactSegmentServiceFunctionalTest extends MauticMysqlTestCase
             $segmentContacts[$segmentTest51Ref->getId()]['count'],
             'There should be no contacts in the has-email-and-visited-url segment after removing contact titles and rebuilding from the command line.'
         );
+
+        $segmentTest40Ref      = $this->getReference('segment-test-include-segment-with-or');
+        $this->runCommand('mautic:segments:update', [
+            '-i'    => $segmentTest40Ref->getId(),
+            '--env' => 'test',
+        ]);
+
+        $segmentContacts = $contactSegmentService->getTotalLeadListLeadsCount($segmentTest40Ref);
+
+        $this->assertEquals(
+            11,
+            $segmentContacts[$segmentTest40Ref->getId()]['count'],
+            'There should be 11 contacts in the segment-test-include-segment-with-or segment after rebuilding from the command line.'
+        );
     }
 
     private function getReference(string $name): LeadList
