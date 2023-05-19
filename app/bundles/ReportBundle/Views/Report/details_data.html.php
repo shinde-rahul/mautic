@@ -125,11 +125,12 @@ $graphContent = $view->render(
                                                     // which does not convert back to date simply print the formatted string.
                                                     if (in_array($cellType, ['date', 'datetime']) && !strtotime($cellVal)) {
                                                         echo $cellVal;
-                                                    } else {
+                                                    }
+                                                    else {
                                                         // For grouping by datetime fields, so we don't get the timestamp on them
                                                         if ('datetime' === $cellType && 10 === strlen($cellVal)) {
                                                             $cellType = 'date';
-                                                         }
+                                                        }
 
                                                         if ('' !== $cellVal && !is_null($cellVal)) {
                                                             switch ($cellType) {
