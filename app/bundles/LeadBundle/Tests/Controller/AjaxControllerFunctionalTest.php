@@ -681,7 +681,7 @@ class AjaxControllerFunctionalTest extends MauticMysqlTestCase
     }
 
     /**
-     * @return iterable<string, array{int, string}>
+     * @return iterable<string, array<int, string>>
      */
     public function dataForGetSegmentFilterIconAction(): iterable
     {
