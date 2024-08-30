@@ -640,9 +640,11 @@ Mautic.addLeadListFilter = function (elId, elObj) {
     var filterOption = mQuery(filterId);
     var label = filterOption.text();
 
-    // Create a new filter
+    const filterTypeIcon = filterOption.data('field-icon');
 
-    var filterNum = Mautic.segmentFilter().getFilterCount();
+    // Create a new filter
+    var filterNum = parseInt(mQuery('.available-filters').data('index'));
+    mQuery('.available-filters').data('index', filterNum + 1);
     var prototypeStr = mQuery('.available-filters').data('prototype');
     var fieldType = filterOption.data('field-type');
     var fieldObject = filterOption.data('field-object');
@@ -667,15 +669,20 @@ Mautic.addLeadListFilter = function (elId, elObj) {
         prototype.find(".panel-heading .panel-glue").addClass('hide');
     }
 
-    Mautic.ajaxActionRequest(
-        'lead:getSegmentFilterIcon',
-        { filterType: elId },
-        function (response) {
-            if (response.iconClass) {
-                prototype.find('.object-icon').removeClass('ri-shapes-line').addClass(response.iconClass);
-            }
-        }
-    );
+    let objectClassName;
+    if (fieldObject === 'company') {
+        objectClassName = 'ri-building-2-line';
+    } else {
+        objectClassName = 'ri-user-6-fill';
+    }
+
+    prototype.find('.object-icon').removeClass (function (index, className) {
+        return (className.match (/\bri-\S+/g) || []).join(' ');
+    }).addClass(objectClassName);
+
+    prototype.find('.filter-type-icon').removeClass (function (index, className) {
+        return (className.match (/\bri-\S+/g) || []).join(' ');
+    }).addClass(filterTypeIcon);
 
     prototype.find(".inline-spacer").append(fieldObject);
 
