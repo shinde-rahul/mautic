@@ -198,7 +198,7 @@ class ThemeController extends FormController
     public function batchDeleteAction(Request $request, ThemeHelperInterface $themeHelper): Response
     {
         $flashes = [];
-        $error   = null;
+        $error   = [];
 
         if ('POST' === $request->getMethod()) {
             $themeNames = json_decode($request->query->get('ids', '{}'));
