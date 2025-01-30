@@ -43,7 +43,6 @@ use Mautic\UserBundle\Entity\User;
 use Mautic\UserBundle\Security\Provider\UserProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -807,7 +806,6 @@ class LeadModelTest extends \PHPUnit\Framework\TestCase
             ->method('dispatch')
             ->with(LeadEvents::LEAD_POST_BATCH_SAVE, $event);
 
-        $leadModel->setDispatcher($dispatcherMock);
         $leadModel->dispatchBatchEventForTest($action, $leadsParams);
     }
 }
