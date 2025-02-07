@@ -6206,7 +6206,11 @@
             "dist": {
                 "type": "path",
                 "url": "app",
+<<<<<<< HEAD
                 "reference": "5d8f26f51dc68fe02c15aafddea0f6acd50b7d31"
+=======
+                "reference": "3fc8a4cd43a179fb7809dda1e4fa0fa2573271cb"
+>>>>>>> 144fc75cf5 (composer require move to app)
             },
             "require": {
                 "aws/aws-sdk-php": "~3.0",
@@ -6294,6 +6298,7 @@
                 "symfony/security-bundle": "^6.4",
                 "symfony/security-core": "^6.4",
                 "symfony/security-csrf": "^6.4",
+                "symfony/serializer": "^6.4",
                 "symfony/stopwatch": "^6.4",
                 "symfony/templating": "^6.4",
                 "symfony/translation": "^6.4",
