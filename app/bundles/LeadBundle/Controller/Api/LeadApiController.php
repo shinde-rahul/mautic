@@ -25,6 +25,7 @@ use Mautic\LeadBundle\Entity\DoNotContact;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Model\DeviceModel;
 use Mautic\LeadBundle\Model\DoNotContact as DoNotContactModel;
+use Mautic\LeadBundle\Model\ExternalActivityModel;
 use Mautic\LeadBundle\Model\FieldModel;
 use Mautic\LeadBundle\Model\LeadModel;
 use Mautic\LeadBundle\Model\NoteModel;
@@ -78,6 +79,7 @@ final class LeadApiController extends CommonApiController
         private UserModel $userModel,
         private DeviceModel $deviceModel,
         private NoteModel $noteModel,
+        private ExternalActivityModel $externalActivityModel,
     ) {
         $this->doNotContactModel = $doNotContactModel;
 
@@ -416,6 +418,43 @@ final class LeadApiController extends CommonApiController
         }
 
         return $this->getAllActivityAction($request, $entity);
+    }
+
+    public function addActivityAction(Request $request, int $id): Response
+    {
+        $contact = $this->model->getEntity($id);
+
+        if (null === $contact) {
+            return $this->notFound();
+        }
+
+        if (!$this->checkEntityAccess($contact, 'edit')) {
+            return $this->accessDenied();
+        }
+
+        $payload = $request->request->all();
+        $type    = $payload['type'] ?? null;
+        $data    = $payload['data'] ?? null;
+
+        if (!is_string($type) || !preg_match('/\A[a-zA-Z0-9][a-zA-Z0-9_.-]{0,63}\z/', $type)) {
+            return $this->returnError($this->translator->trans('mautic.lead.api.external_activity.invalid_type'), Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!is_array($data) || ([] !== $data && array_is_list($data))) {
+            return $this->returnError($this->translator->trans('mautic.lead.api.external_activity.invalid_data'), Response::HTTP_BAD_REQUEST);
+        }
+
+        $log = $this->externalActivityModel->record($contact, $type, $data);
+
+        return $this->handleView($this->view([
+            'activity' => [
+                'id'        => $log->getId(),
+                'contactId' => $contact->getId(),
+                'type'      => $type,
+                'data'      => $data,
+                'timestamp' => $log->getDateAdded()->format(DATE_ATOM),
+            ],
+        ], Response::HTTP_CREATED));
     }
 
     /**

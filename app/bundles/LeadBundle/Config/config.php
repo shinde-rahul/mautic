@@ -171,6 +171,12 @@ return [
                 'controller' => 'Mautic\LeadBundle\Controller\Api\LeadApiController::removeDncAction',
                 'method'     => 'POST',
             ],
+            'mautic_api_addcontactevent' => [
+                'path'       => '/contacts/{id}/activity/new',
+                'controller' => 'Mautic\LeadBundle\Controller\Api\LeadApiController::addActivityAction',
+                'method'     => 'POST',
+                'requirements' => ['id' => '\\d+'],
+            ],
             'mautic_api_getcontactevents' => [
                 'path'       => '/contacts/{id}/activity',
                 'controller' => 'Mautic\LeadBundle\Controller\Api\LeadApiController::getActivityAction',
