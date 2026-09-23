@@ -11,7 +11,8 @@ use Mautic\LeadBundle\Entity\LeadEventLogRepository;
 
 final class ExternalActivityModel
 {
-    public const OBJECT = 'external_activity';
+    public const EVENT_TYPE = 'lead.external';
+    public const OBJECT     = 'external_activity';
 
     public function __construct(
         private LeadEventLogRepository $repository,
